@@ -1,0 +1,65 @@
+<html>
+<head>
+<style>
+canvas{
+  display:block;
+  border:solid 1px #000;
+}
+</style>
+
+</head><body>
+<canvas id="can" width="600" height="400"></canvas>
+<script type="text/javascript">
+var plot = [
+  {x:1, y:100},
+  {x:2, y:200},
+  {x:4, y:300},
+  {x:500, y:190},
+    {x:600, y:190},
+    {x:800, y:190},
+    {x:900, y:190},
+    {x:1000, y:290}
+  ];
+
+var can = document.getElementById("can"),
+    ctx = can.getContext('2d'),
+    dragging = false,
+    lastX = 0,
+    translated = 0;
+
+ctx.scale(1,-1);
+ctx.translate(0, -400);
+
+can.onmousedown = function(e){
+  var evt = e || event;
+  dragging = true;
+  lastX = evt.offsetX;
+}
+
+window.onmousemove = function(e){
+  var evt = e || event;
+  if (dragging){
+    var delta = evt.offsetX - lastX;
+    translated += delta;
+    ctx.translate(delta, 0);
+    lastX = evt.offsetX;
+    draw();
+  }
+}
+
+window.onmouseup = function(){
+  dragging = false;
+}
+
+function draw(){
+  ctx.clearRect(-translated,0,600,400);
+  for (var i = 0; i < plot.length; i++){
+    ctx.beginPath();
+    ctx.arc(plot[i].x, plot[i].y, 5, 0, 2*Math.PI);
+    ctx.fill();
+  }
+}
+
+draw();
+</script>
+</body></html>

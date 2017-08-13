@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tornado WebSockets</title>
+	<meta charset="utf-8">
+	  <script type="text/javascript">
+		
+		var txt_div;
+				
+		function WebSocketTest() {
+            if ("WebSocket" in window) {
+                	txt_div.innerHTML += "Second connections is establed\n<br>";
+                	var ws = new WebSocket("ws://localhost:8008/websocket?Id=123456789");
+                	ws.onopen = function() { ws.send("Message to send");};
+                	ws.onmessage = function (evt) {  var received_msg = evt.data;
+                    	txt_div.innerHTML += "Message is received..."+received_msg+"<br>";
+                    	txt_div.scrollTop = txt_div.scrollHeight;
+                		};
+                	ws.onclose = function() { txt_div.innerHTML += "Connection is closed...\n<br>";
+                	};
+            } else {txt_div.innerHTML += "WebSocket NOT supported by your Browser!\n<br>";}
+        }
+		
+		 var ws2;
+		 window.onload = function(){    
+        	txt_div = document.getElementById("messages");   	      
+        	ws2 = new WebSocket("ws://localhost:8008/websocket?Id=11111");
+        	ws2.onopen = function() { 
+        		txt_div.innerHTML = "Application is started<br>";
+        		ws2.send("Start first websocket");};
+        	ws2.onmessage = function(evt) {var received_msg = evt.data; 
+        	txt_div.innerHTML += ">> "+received_msg+"<br>";
+    	}}
+    	
+        function sendMsgKey(msg){       
+          var charCode;
+   		 if(msg && msg.which){charCode = msg.which;
+   		 }else if(window.event){ msg = window.event; charCode = msg.keyCode;} 
+    		if(charCode == 13) {
+    			sendMsgBut();}}
+         
+
+	function sendMsg(txt){
+		txt_div.innerHTML += "Input: "+txt+"<br>";
+        		ws2.send(txt);
+        		ws2.onmessage = function (evt) {var received_msg = evt.data;
+                	txt_div.innerHTML += ">> "+received_msg+"<br>";
+                	txt_div.scrollTop = txt_div.scrollHeight;};
+		
+	}
+
+    function sendMsgBut(){
+    	txt = document.getElementById("cmdInput").value;
+    	sendMsg(txt);
+    }	     		
+       </script>
+
+    </head>                    
+    <body>
+    <br>Hello <br>
+          	<a href="javascript:WebSocketTest()">Test WebSocket</a>
+          	<br><br>
+        	<div id="messages" style="height:200px;background:black;color:white;overflow:auto;"></div>      
+        	<div id="terminal" style="background:black;color:white;">
+        		<strong>Tornado#</strong><input id="cmdInput" style="background:black;color:white;" size="20" type="text" placeholder="" onkeydown="sendMsgKey(this)"/>
+				<button id="sendKey" onclick="sendMsgBut()">Enter</button>
+				</div>
+    </body>
+    
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  
+<script type="text/javascript">
+	var chart_minX=0;
+	var chart_maxY=0;
+	var arrayBuffer ;
+	var oReq = new XMLHttpRequest();
+	oReq.open("GET", "js/fft.bin", true);
+	oReq.responseType = "arraybuffer";
+		oReq.onload = function (oEvent) {
+		arrayBuffer = oReq.response; 
+		drowChart( oReq.response);
+		};
+	oReq.send(null);
+	
+	//var arrayBuffer ;
+	var start = 0;
+	var canChart;
+	var conChart;
+
+	function sendNewSize(width,height){
+		canChart.width = width;
+		canChart.height = height;
+		drowChart( arrayBuffer);
+	}
+	 window.onload = function(){
+		canChart = document.getElementById('chart');
+		conChart = canChart.getContext('2d');		
+	}
+  </script>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;}
+    </style>
+  </head>
+  <body>
+
+<button id="sendKey" onclick="sendNewSize(500,200)">Enter</button>
+    <canvas id="animation" width="1000" height="20">Animation</canvas>
+       <table border=0><tr>
+	<td align="right" valign="top"> <div id="chart_maxY" value="10"  >top</div></td>
+	<td ><div id="grafik" style="margin:10px;width:1000px;height:200px;background:black;color:white;overflow:scroll;"><canvas id="chart" style="margin:10px;background:black"></canvas></div></td>
+    </tr><tr>
+	<td align="right"> <div id="chart_minX" value="10">left</div></td>
+	<td align="right"> <div id="chart_maxX" value="10">right</div></td>
+    </tr><tr>
+	<td><button id="sendKey" onclick="sendNewSize(500,200)">Resize chart</button></td>
+	<td><button id="sendReq" onclick="requestData()">Take data for chart</button></td>
+     </tr></table>
+   <p style="margin-left:100px;"> Data in chart</p>
+    <div id="myArray" value="empty"  style="margin-left:100px;width:1000px;height:200px;overflow:scroll;border:1px solid #000;border-radius: 4px;"></div>  
+<script type="text/javascript" src="js/dragChart.js"> // script for creating and animate</script>    
+<script type="text/javascript" src="js/animate.js"></script>
+</body>
+</html>

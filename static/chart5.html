@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+<script type="text/javascript">
+	var mas= [];
+	var start = 0;
+	var canvas2 = document.getElementById('myCanvas2');
+	var context2;
+	
+	function sendNewSize(width,height){
+		canvas2.width = width;
+		canvas2.height = height;
+		drowChart();
+	}
+	
+	function drowChart(){
+		context2.beginPath();
+		for (var i = 0; i < mas.length; i++) {
+			context2.lineTo(mas[i][0]+start,mas[i][1]);		
+		}
+		context2.lineWidth = 1;
+		context2.strokeStyle = 'blue';
+		context2.stroke();	
+	}
+  </script>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+
+<button id="sendKey" onclick="sendNewSize(500,200)">Enter</button>
+    <canvas id="myCanvas" width="1000" height="20"></canvas>
+    <canvas id="myCanvas2" width="1200" height="200"></canvas>
+    <div id="myArray" value="empty"></div>  
+    <script>
+      	canvas2 = document.getElementById('myCanvas2');
+	context2 = canvas2.getContext('2d');
+	//================== generate array
+	var m=900;
+	var min = 10;
+	var max = 200;
+	//	
+		
+	for (var i=0; i<m; i++){
+		mas[i]=new Array;
+		mas[i][0]=i*1;
+		mas[i][1]=Math.round((Math.random() * (max - min + 1)) + min);
+	}
+	//alert());
+	document.getElementById('myArray').innerHTML=JSON.stringify(mas);
+	drowChart();
+    
+    /// animated rectangle
+	var canvas = document.getElementById('myCanvas');
+	var context = canvas.getContext('2d');
+	var amplitude = canvas.width/2 - 10;
+        // in ms
+	var period = 10000;
+	var myRectangle = {
+		x: 500,
+		y: 00,
+		width: 20,
+		height: 20,
+		borderWidth: 1
+	};
+
+// script for creating and animate
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+      function drawRectangle(myRectangle, context) {
+        context.beginPath();
+        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+        context.fillStyle = '#8ED6FF';
+        context.fill();
+        context.lineWidth = myRectangle.borderWidth;
+        context.strokeStyle = 'black';
+        context.stroke();
+      }
+      function animate(myRectangle, canvas, context, startTime) {
+        // update
+        var time = (new Date()).getTime() - startTime;
+        var centerX = canvas.width / 2 - myRectangle.width / 2;
+        var nextX = amplitude * Math.sin(time * 2 * Math.PI / period) + centerX;
+        myRectangle.x = nextX;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawRectangle(myRectangle, context);
+        requestAnimFrame(function() {
+          animate(myRectangle, canvas, context, startTime);
+        });
+      }
+      drawRectangle(myRectangle, context);
+      // wait one second before starting animation
+      setTimeout(function() {
+        var startTime = (new Date()).getTime();
+        animate(myRectangle, canvas, context, startTime);
+      }, 100);
+    </script>
+  </body>
+</html>

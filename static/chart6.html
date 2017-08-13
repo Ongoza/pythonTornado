@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+<script type="text/javascript" >
+	var mas= [];
+	var txt_div;
+	var canChart;
+	var conChart;
+	var canAnim;
+	var conAnim;
+	var chart_minX=0;
+	var chart_maxY=0;
+	window.onload = function(){ txt_div = document.getElementById("messages");  }	 
+	 var ws = new WebSocket("ws://localhost:8008/websocket?Id=11111");
+	 var ws_chart = new WebSocket("ws://localhost:8008/websocket?Id=2222");
+  </script>
+  <script type="text/javascript" src="js/webSocket.js"></script>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body margin="20">
+  
+<br> <a href="javascript:WebSocketTest()">Test WebSocket</a>
+          	<br><br>
+  <div id="messages" style="margin:10px;width:1000px;height:200px;background:black;color:white;overflow:auto;"></div>      
+  
+    <canvas id="animation" width="1000" height="20"></canvas>
+    <script type="text/javascript" src="js/animate.js"></script>
+    
+    <table border=0><tr>
+	<td align="right" valign="top"> <div id="chart_maxY" value="10"  >top</div></td>
+	<td ><div id="grafik" style="margin:10px;width:1000px;height:200px;background:black;color:white;overflow:auto;"><canvas id="chart" width="1000" height="200" style="margin:10px;background:black"></canvas></div></td>
+    </tr><tr>
+	<td align="right"> <div id="chart_minX" value="10">left</div></td>
+	<td align="right"> <div id="chart_maxX" value="10">right</div></td>
+    </tr><tr>
+	<td><button id="sendKey" onclick="sendNewSize(500,200)">Resize chart</button></td>
+	<td><button id="sendReq" onclick="requestData()">Take new data for chart</button></td>
+     </tr></table>
+       <div id="myArray" value="empty"></div>  
+    <script type="text/javascript" src="js/dragChart.js"> // script for creating and animate</script>   
+    
+  </body>
+</html>
