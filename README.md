@@ -1,1 +1,2 @@
-This is python Tornado WEB and UDP server application.
+This is python Tornado HTTP, websocket and UDP server application.
+
